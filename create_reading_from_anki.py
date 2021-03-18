@@ -13,6 +13,7 @@ import random
 import jieba
 import hanziconv
 import pandas as pd
+import datetime
 
 LOGGER = logging.getLogger(__name__)
 
@@ -48,7 +49,7 @@ def main(args):
             learning_sentences.append(row["hanzi"])
 
     random.shuffle(learning_sentences)
-    with open("../../Dropbox/scr/learning_sentences.txt","w") as ff:
+    with open(f"../../Dropbox/chinese_sentences/learning_sentences_{datetime.date.today().strftime('%Y_%m_%d')}__{datetime.datetime.now().time().strftime('%H_%M_%S')}.txt","w") as ff:
         for sen in learning_sentences:
             trad_sen=hanziconv.HanziConv.toTraditional(sen)
             ff.write(trad_sen+"\n")

@@ -105,7 +105,7 @@ def create_new_csv():
     sentence_df["complexity"] = sentence_df.apply(
         lambda row: get_complexity(row.hanzi), axis=1
     )
-    all_senteces=sentence_df
+    all_senteces = sentence_df
 
     # sentence_df2 = pd.read_csv(
     #     "data/HSKsentences.tsv",
@@ -127,13 +127,18 @@ def main(args):
 
     # create_new_csv(args)
 
+    sentence_df = pd.read_csv("data/graded_sentences.csv")
+    sentence_df["char_list"] = sentence_df.apply(
+        lambda row: list(jieba.cut(row["hanzi"])), axis=1
+    )
     while True:
-        word=input("####### Input charater(s): ")
-        sentence_df = pd.read_csv("data/graded_sentences.csv")
-        sentence_df=sentence_df[sentence_df["hanzi"].str.contains(word)]
-        sentence_df=sentence_df[:6]
+        word = input("####### Input word: ")
+        tmp = sentence_df[
+            pd.DataFrame(sentence_df.char_list.tolist()).isin([word]).any(1).values
+        ]
+        tmp = tmp[:6]
         print("--------------------")
-        for index, row in sentence_df.iterrows():
+        for index, row in tmp.iterrows():
             print(row["hanzi"])
             print(row["pinyin"])
             print(row["english"])
